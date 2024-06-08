@@ -6,6 +6,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gmt.gmtUser.exception.ApiRequestException;
 import com.gmt.gmtUser.exception.ApiRequestResponse;
 import com.gmt.gmtUser.service.MapService;
+import com.google.maps.errors.ApiException;
+import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.PlaceDetails;
+import com.google.maps.model.TravelMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -28,5 +32,25 @@ public class MapController {
     public ApiRequestResponse placetextSearchApi(@RequestParam String longitude, String latitude) throws JsonProcessingException {
         return new ApiRequestResponse(mapService.callPlacetextSearchApi(longitude, latitude));
     }
-
+    @GetMapping("/directions")
+    public DirectionsResult getDirections(@RequestParam String origin,
+                                          @RequestParam String destination,
+                                          @RequestParam(required = false, defaultValue = "DRIVING") String mode) {
+        try {
+            TravelMode travelMode = TravelMode.valueOf(mode.toUpperCase()); // Convert string to TravelMode
+            return mapService.getDirections(origin, destination, travelMode);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ApiRequestException("error while getting direction, error - "+ e.getMessage());
+        }
+    }
+    @GetMapping("/placeDetails")
+    public PlaceDetails getPlaceDetails(@RequestParam String placeId) {
+        try {
+            return mapService.getPlaceDetails(placeId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ApiRequestException("error while place details, error - "+ e.getMessage());
+        }
+    }
 }
