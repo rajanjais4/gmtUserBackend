@@ -1,8 +1,10 @@
 package com.gmt.gmtUser.controller;
 
+import com.gmt.gmtUser.model.Response.AverageTemperatureResponse;
 import com.gmt.gmtUser.model.itinerary.Place;
 import com.gmt.gmtUser.service.PlaceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -47,4 +49,11 @@ public class PlaceController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    @GetMapping("/average-week-temperature")
+    public ResponseEntity<AverageTemperatureResponse> getAverageWeekTemperature(@RequestParam String location) {
+        AverageTemperatureResponse response = placeService.getAverageWeekTemperature(location);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 }

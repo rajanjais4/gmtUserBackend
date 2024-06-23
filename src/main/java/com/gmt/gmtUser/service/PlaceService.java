@@ -1,7 +1,11 @@
 package com.gmt.gmtUser.service;
 
+import com.gmt.gmtUser.model.Response.AverageTemperatureResponse;
+import com.gmt.gmtUser.model.Response.PopularityResponse;
 import com.gmt.gmtUser.model.itinerary.Place;
 import com.gmt.gmtUser.repository.PlaceRepository;
+import com.gmt.gmtUser.repository.PopularityRepository;
+import com.gmt.gmtUser.repository.WeatherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -50,4 +54,20 @@ public class PlaceService {
     public Optional<Place> getPlaceById(String id) {
         return placeRepository.findById(id);
     }
+
+    @Autowired
+    private WeatherRepository weatherRepository;
+
+    @Autowired
+    private PopularityRepository popularityRepository;
+
+    public AverageTemperatureResponse getAverageWeekTemperature(String location) {
+        return weatherRepository.fetchAverageWeekTemperature(location);
+    }
+
+    public PopularityResponse getPopularityPercentage(String location) {
+        return popularityRepository.calculatePopularity(location);
+    }
+
+
 }

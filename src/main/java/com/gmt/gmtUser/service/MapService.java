@@ -14,6 +14,8 @@ import com.google.maps.model.TravelMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.swing.plaf.PanelUI;
 import java.io.IOException;
@@ -60,5 +62,16 @@ public class MapService {
 
     public PlaceDetails getPlaceDetails(String placeId) throws InterruptedException, ApiException, IOException {
         return PlacesApi.placeDetails(geoApiContext, placeId).await();
+    }
+
+    private final RestTemplate restTemplate = new RestTemplate();
+
+    public String getPlacePredictions(String input) {
+        String url = UriComponentsBuilder.fromHttpUrl("https://maps.googleapis.com/maps/api/place/autocomplete/json")
+                .queryParam("input", input)
+                .queryParam("key", apiKey)
+                .toUriString();
+
+        return restTemplate.getForObject(url, String.class);
     }
 }

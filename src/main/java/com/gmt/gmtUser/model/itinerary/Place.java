@@ -19,7 +19,6 @@ public class Place {
     @NotBlank
     private String name;
 
-    @NotNull
     private Location location;
 
     private String description;
@@ -31,7 +30,7 @@ public class Place {
     private List<TagScore> tagsScore;
 
     private List<String> poi; // List of POI IDs
-
+    private String shortDescription;
     private Date createdAt;
 
     private Date updatedAt;

@@ -23,7 +23,6 @@ public class PointOfInterest {
     @NotBlank
     private String placeId; // Reference to Place
 
-    @NotNull
     private Location location;
 
     private List<TagScore> tagsScore;
