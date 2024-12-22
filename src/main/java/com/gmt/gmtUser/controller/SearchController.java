@@ -19,5 +19,6 @@ public class SearchController {
                                @RequestParam(required = false) Double lng,
                                @RequestParam(required = false) String country) {
         return googlePlacesService.getPlacePredictions(input, lat, lng, country);
+        // need to add DTO
     }
 }
